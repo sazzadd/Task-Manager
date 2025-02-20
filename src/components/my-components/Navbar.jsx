@@ -27,8 +27,8 @@ export default function Navbar() {
         <ModeToggle></ModeToggle>
         {user && user?.email ? (
           <div className="flex gap-2">
-            <Avatar >
-              <AvatarImage  src={user?.photoURL} />
+            <Avatar>
+              <AvatarImage src={user?.photoURL} />
               <AvatarFallback>CN</AvatarFallback>
             </Avatar>
             <Button onClick={handleLogOut}>
@@ -40,6 +40,7 @@ export default function Navbar() {
           <Button onClick={GoogleLogin}>
             {" "}
             <FaGoogle />
+            Login
           </Button>
         )}
       </div>
