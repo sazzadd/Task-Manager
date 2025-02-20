@@ -1,12 +1,5 @@
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
 import { FaCheckDouble } from "react-icons/fa";
-import { IoMdTime } from "react-icons/io";
+import TaskCard from "./TaskCard";
 
 const FinishedTask = () => {
   return (
@@ -17,23 +10,8 @@ const FinishedTask = () => {
         </span>{" "}
         Finished
       </h4>
-      <div className="p-2">
-        <Card className="border border-gray-300 shadow-sm p-2">
-          <CardHeader className="flex flex-row justify-between items-center">
-            <CardTitle className="text-base font-medium flex items-center gap-2">
-              finished React Assignment
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p className="text-sm text-gray-500">
-              Work on the new React assignment and submit before the deadline.
-            </p>
-          </CardContent>
-          <CardFooter className="text-xs text-gray-400">
-            <IoMdTime className="mr-2" size={14} />
-            2025-02-20
-          </CardFooter>
-        </Card>
+      <div className="">
+        <TaskCard></TaskCard>
       </div>
     </div>
   );
