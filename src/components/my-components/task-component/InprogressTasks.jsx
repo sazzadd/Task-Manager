@@ -3,11 +3,11 @@ import { FaHourglassHalf } from "react-icons/fa";
 const InprogressTasks = () => {
   return (
     <div className="lg:flex-1 bg-secondary/40 rounded-md  h-full overflow-y-auto">
-      <h4 className="sticky p-4 top-0 flex bg-yellow-400  py-5 text-xl">
+      <h4 className="sticky p-4 top-0 font-bold flex bg-yellow-400  py-5 text-xl">
         <span className="mt-1 mr-1">
           <FaHourglassHalf />
         </span>
-        In Progress
+        Inprogress  
       </h4>
       <p>
         Lorem ipsum dolor sit amet consectetur adipisicing elit. Nulla

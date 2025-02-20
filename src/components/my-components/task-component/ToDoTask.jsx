@@ -1,12 +1,12 @@
 import { MdOutlinePendingActions } from "react-icons/md";
 const ToDoTask = () => {
   return (
-    <div className="lg:flex-1 bg-secondary/40 rounded-md font-bold h-full overflow-y-auto">
-      <h4 className="sticky p-4 top-0 flex bg-blue-400  py-5 text-xl">
+    <div className="lg:flex-1 bg-secondary/40 rounded-md h-full overflow-y-auto">
+      <h4  className=" font-bold  sticky p-4 top-0 flex bg-blue-400  py-5 text-xl">
         <span className="mt-1 mr-1">
           <MdOutlinePendingActions />
         </span>
-        In Progress
+        To Do
       </h4>
       <p>
         Lorem ipsum dolor sit amet consectetur adipisicing elit. Nulla

@@ -7,7 +7,7 @@ const FinishedTask = () => {
         <span className="mt-1 mr-1">
           <FaCheckDouble />
         </span>{" "}
-        In Progress
+        Finished
       </h4>
       <p>
         Lorem ipsum dolor sit amet consectetur adipisicing elit. Nulla
