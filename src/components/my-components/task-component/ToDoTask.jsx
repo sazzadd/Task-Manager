@@ -1,11 +1,10 @@
+import { useDroppable } from "@dnd-kit/core"
 import { MdOutlinePendingActions } from "react-icons/md"
 import TaskCard from "./TaskCard"
-import { useDroppable } from "@dnd-kit/core"
-import { SortableContext, verticalListSortingStrategy } from "@dnd-kit/sortable"
 
-const ToDoTask = ({ tasks, onUpdateTask, onDeleteTask }) => {
+const ToDoTask = ({ tasks }) => {
   const { setNodeRef } = useDroppable({
-    id: "To-Do",
+    id: "to-do",
   })
 
   return (
@@ -16,13 +15,11 @@ const ToDoTask = ({ tasks, onUpdateTask, onDeleteTask }) => {
         </span>
         To Do
       </h4>
-      <SortableContext items={tasks.map((t) => t._id)} strategy={verticalListSortingStrategy}>
-        <div>
-          {tasks.map((task) => (
-            <TaskCard key={task._id} task={task} onUpdateTask={onUpdateTask} onDeleteTask={onDeleteTask} />
-          ))}
-        </div>
-      </SortableContext>
+      <div className="category-container" id="todo-category-container">
+        {tasks.map((task) => (
+          <TaskCard key={task._id} task={task} />
+        ))}
+      </div>
     </div>
   )
 }

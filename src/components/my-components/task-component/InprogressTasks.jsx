@@ -1,11 +1,10 @@
+import { useDroppable } from "@dnd-kit/core"
 import { FaHourglassHalf } from "react-icons/fa"
 import TaskCard from "./TaskCard"
-import { useDroppable } from "@dnd-kit/core"
-import { SortableContext, verticalListSortingStrategy } from "@dnd-kit/sortable"
 
-const InprogressTasks = ({ tasks, onUpdateTask, onDeleteTask }) => {
+const InprogressTasks = ({ tasks }) => {
   const { setNodeRef } = useDroppable({
-    id: "In Progress",
+    id: "inprogress",
   })
 
   return (
@@ -14,15 +13,13 @@ const InprogressTasks = ({ tasks, onUpdateTask, onDeleteTask }) => {
         <span className="mt-1 mr-1">
           <FaHourglassHalf />
         </span>
-        In Progress
+        Inprogress
       </h4>
-      <SortableContext items={tasks.map((t) => t._id)} strategy={verticalListSortingStrategy}>
-        <div>
-          {tasks.map((task) => (
-            <TaskCard key={task._id} task={task} onUpdateTask={onUpdateTask} onDeleteTask={onDeleteTask} />
-          ))}
-        </div>
-      </SortableContext>
+      <div className="category-container" id="Inprogress-category-container">
+        {tasks.map((task) => (
+          <TaskCard key={task._id} task={task} />
+        ))}
+      </div>
     </div>
   )
 }

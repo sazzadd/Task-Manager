@@ -1,11 +1,10 @@
+import { useDroppable } from "@dnd-kit/core"
 import { FaCheckDouble } from "react-icons/fa"
 import TaskCard from "./TaskCard"
-import { useDroppable } from "@dnd-kit/core"
-import { SortableContext, verticalListSortingStrategy } from "@dnd-kit/sortable"
 
-const FinishedTask = ({ tasks, onUpdateTask, onDeleteTask }) => {
+const FinishedTask = ({ tasks }) => {
   const { setNodeRef } = useDroppable({
-    id: "Done",
+    id: "finished",
   })
 
   return (
@@ -16,13 +15,11 @@ const FinishedTask = ({ tasks, onUpdateTask, onDeleteTask }) => {
         </span>
         Finished
       </h4>
-      <SortableContext items={tasks.map((t) => t._id)} strategy={verticalListSortingStrategy}>
-        <div>
-          {tasks.map((task) => (
-            <TaskCard key={task._id} task={task} onUpdateTask={onUpdateTask} onDeleteTask={onDeleteTask} />
-          ))}
-        </div>
-      </SortableContext>
+      <div className="category-container" id="finished-category-container">
+        {tasks.map((task) => (
+          <TaskCard key={task._id} task={task} />
+        ))}
+      </div>
     </div>
   )
 }
