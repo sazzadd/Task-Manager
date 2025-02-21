@@ -1,77 +1,110 @@
-"use client"
+import { useState } from "react";
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { IoMdTime } from "react-icons/io";
+import { FiEdit, FiTrash2 } from "react-icons/fi";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 
-import { useState } from "react"
-import { useSortable } from "@dnd-kit/sortable"
-import { CSS } from "@dnd-kit/utilities"
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Textarea } from "@/components/ui/textarea"
-import { IoMdTime } from "react-icons/io"
-import { FaEdit, FaTrash } from "react-icons/fa"
-
-const TaskCard = ({ task, onUpdateTask, onDeleteTask, isDragging }) => {
-  const [isEditing, setIsEditing] = useState(false)
-  const [editedTitle, setEditedTitle] = useState(task.title)
-  const [editedDescription, setEditedDescription] = useState(task.description)
-
-  const { attributes, listeners, setNodeRef, transform, transition } = useSortable({ id: task._id })
-
-  const style = {
-    transform: CSS.Transform.toString(transform),
-    transition,
-    opacity: isDragging ? 0.5 : 1,
-  }
+const TaskCard = () => {
+  const [open, setOpen] = useState(false);
+  const [title, setTitle] = useState("Trying React Assignment");
+  const [description, setDescription] = useState(
+    "Work on the new React assignment and submit before the deadline."
+  );
 
   const handleUpdate = () => {
-    onUpdateTask(task._id, { title: editedTitle, description: editedDescription })
-    setIsEditing(false)
-  }
-
+    console.log("Updated:", { title, description });
+    setOpen(false);
+  };
+// hellew
   return (
-    <div ref={setNodeRef} style={style} {...attributes} {...listeners}>
-      <Card className="border border-gray-300 shadow-sm p-2 cursor-move mb-2">
-        {isEditing ? (
-          <div className="space-y-2">
-            <Input value={editedTitle} onChange={(e) => setEditedTitle(e.target.value)} placeholder="Task title" />
-            <Textarea
-              value={editedDescription}
-              onChange={(e) => setEditedDescription(e.target.value)}
-              placeholder="Task description"
-            />
-            <div className="flex justify-end space-x-2">
-              <Button onClick={() => setIsEditing(false)} variant="outline">
-                Cancel
-              </Button>
-              <Button onClick={handleUpdate}>Save</Button>
-            </div>
+    <div className="p-2">
+      <Card className="border border-gray-300 shadow-sm p-4">
+        {/* Left-aligned Content */}
+        <div className="flex flex-col gap-2">
+          {/* Buttons */}
+          <div className="flex gap-2">
+            <Button
+              variant="ghost"
+              size="icon"
+              className="text-gray-500 hover:text-gray-800"
+              onClick={() => setOpen(true)}
+            >
+              <FiEdit size={16} />
+            </Button>
+            <Button
+              variant="ghost"
+              size="icon"
+              className="text-red-500 hover:text-red-700"
+              onClick={() => console.log("Delete function called")}
+            >
+              <FiTrash2 size={16} />
+            </Button>
           </div>
-        ) : (
-          <>
-            <CardHeader className="flex flex-row justify-between items-center p-2">
-              <CardTitle className="text-base font-medium">{task.title}</CardTitle>
-              <div className="flex space-x-2">
-                <Button onClick={() => setIsEditing(true)} size="sm" variant="outline">
-                  <FaEdit />
-                </Button>
-                <Button onClick={() => onDeleteTask(task._id)} size="sm" variant="outline" className="text-red-500">
-                  <FaTrash />
-                </Button>
-              </div>
-            </CardHeader>
-            <CardContent className="p-2">
-              <p className="text-sm text-gray-500">{task.description}</p>
-            </CardContent>
-            <CardFooter className="text-xs text-gray-400 p-2">
-              <IoMdTime className="mr-2" size={14} />
-              {new Date(task.timestamp).toLocaleDateString()}
-            </CardFooter>
-          </>
-        )}
+
+          {/* Title */}
+          <CardHeader className="p-0">
+            <CardTitle className="text-base font-medium">{title}</CardTitle>
+          </CardHeader>
+
+          {/* Description */}
+          <CardContent className="p-0">
+            <p className="text-sm text-gray-500">{description}</p>
+          </CardContent>
+
+          {/* Date */}
+          <CardFooter className="p-0 text-xs text-gray-400 flex items-center">
+            <IoMdTime className="mr-2" size={14} />
+            2025-02-20
+          </CardFooter>
+        </div>
       </Card>
+
+      {/* Update Modal */}
+      <Dialog open={open} onOpenChange={setOpen}>
+        <DialogContent className="p-6 max-w-md">
+          <DialogHeader>
+            <DialogTitle>Edit Task</DialogTitle>
+          </DialogHeader>
+          <div className="space-y-4">
+            <Input
+              type="text"
+              placeholder="Title"
+              maxLength={50}
+              required
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+            />
+            <Textarea
+              placeholder="Description (optional)"
+              maxLength={200}
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+            />
+          </div>
+          <div className="flex justify-end gap-2 mt-4">
+            <Button variant="outline" onClick={() => setOpen(false)}>
+              Cancel
+            </Button>
+            <Button onClick={handleUpdate}>Update</Button>
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
-  )
-}
+  );
+};
 
-export default TaskCard
-
+export default TaskCard;
