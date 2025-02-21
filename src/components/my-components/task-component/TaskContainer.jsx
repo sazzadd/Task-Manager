@@ -1,6 +1,5 @@
 "use client";
 
-import { AuthContext } from "@/AuthProvider/AuthProvider";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -13,22 +12,21 @@ import { Textarea } from "@/components/ui/textarea";
 import {
   closestCorners,
   DndContext,
+  DragOverlay,
   KeyboardSensor,
   PointerSensor,
   useSensor,
   useSensors,
 } from "@dnd-kit/core";
-import {
-  arrayMove,
-  SortableContext,
-  sortableKeyboardCoordinates,
-  verticalListSortingStrategy,
-} from "@dnd-kit/sortable";
+import { arrayMove, sortableKeyboardCoordinates } from "@dnd-kit/sortable";
 import { useContext, useEffect, useState } from "react";
-import io from "socket.io-client";
 import FinishedTask from "./FinishedTask";
 import InprogressTasks from "./InprogressTasks";
+import TaskCard from "./TaskCard";
 import ToDoTask from "./ToDoTask";
+
+import { AuthContext } from "@/AuthProvider/AuthProvider";
+import io from "socket.io-client";
 
 const socket = io("http://localhost:5000");
 
@@ -37,6 +35,7 @@ const TaskContainer = () => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [tasks, setTasks] = useState([]);
+  const [activeId, setActiveId] = useState(null);
   const { user } = useContext(AuthContext);
 
   const sensors = useSensors(
@@ -105,7 +104,12 @@ const TaskContainer = () => {
     }
   };
 
-  const handleDragEnd = (event) => {
+  const handleDragStart = (event) => {
+    const { active } = event;
+    setActiveId(active.id);
+  };
+
+  const handleDragEnd = async (event) => {
     const { active, over } = event;
 
     if (active.id !== over.id) {
@@ -114,11 +118,11 @@ const TaskContainer = () => {
         const newIndex = items.findIndex((item) => item._id === over.id);
         const newItems = arrayMove(items, oldIndex, newIndex);
 
-        // Update the task's category if it was moved to a different list
         const updatedTask = {
           ...newItems[newIndex],
-          category: over.data.current.category,
+          category: over.data.current.sortable.containerId,
         };
+
         fetch(`http://localhost:5000/tasks/${updatedTask._id}`, {
           method: "PUT",
           headers: { "Content-Type": "application/json" },
@@ -129,6 +133,33 @@ const TaskContainer = () => {
           index === newIndex ? updatedTask : item
         );
       });
+    }
+    setActiveId(null);
+  };
+
+  const handleUpdateTask = async (taskId, updatedData) => {
+    const response = await fetch(`http://localhost:5000/tasks/${taskId}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(updatedData),
+    });
+
+    if (response.ok) {
+      setTasks((prevTasks) =>
+        prevTasks.map((task) =>
+          task._id === taskId ? { ...task, ...updatedData } : task
+        )
+      );
+    }
+  };
+
+  const handleDeleteTask = async (taskId) => {
+    const response = await fetch(`http://localhost:5000/tasks/${taskId}`, {
+      method: "DELETE",
+    });
+
+    if (response.ok) {
+      setTasks((prevTasks) => prevTasks.filter((task) => task._id !== taskId));
     }
   };
 
@@ -182,21 +213,36 @@ const TaskContainer = () => {
       <DndContext
         sensors={sensors}
         collisionDetection={closestCorners}
+        onDragStart={handleDragStart}
         onDragEnd={handleDragEnd}
       >
         <div className="lg:flex-1 mt-8 lg:flex gap-5 overflow-hidden">
-          <SortableContext items={tasks} strategy={verticalListSortingStrategy}>
-            <ToDoTask
-              tasks={tasks.filter((task) => task.category === "To-Do")}
-            />
-            <InprogressTasks
-              tasks={tasks.filter((task) => task.category === "In Progress")}
-            />
-            <FinishedTask
-              tasks={tasks.filter((task) => task.category === "Done")}
-            />
-          </SortableContext>
+          <ToDoTask
+            tasks={tasks.filter((task) => task.category === "To-Do")}
+            onUpdateTask={handleUpdateTask}
+            onDeleteTask={handleDeleteTask}
+          />
+          <InprogressTasks
+            tasks={tasks.filter((task) => task.category === "In Progress")}
+            onUpdateTask={handleUpdateTask}
+            onDeleteTask={handleDeleteTask}
+          />
+          <FinishedTask
+            tasks={tasks.filter((task) => task.category === "Done")}
+            onUpdateTask={handleUpdateTask}
+            onDeleteTask={handleDeleteTask}
+          />
         </div>
+        <DragOverlay>
+          {activeId ? (
+            <TaskCard
+              task={tasks.find((task) => task._id === activeId)}
+              onUpdateTask={handleUpdateTask}
+              onDeleteTask={handleDeleteTask}
+              isDragging
+            />
+          ) : null}
+        </DragOverlay>
       </DndContext>
     </div>
   );
