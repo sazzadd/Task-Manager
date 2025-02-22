@@ -13,7 +13,6 @@ import { MdDeleteForever } from "react-icons/md";
 import DialogDemo from "./DialogDemo";
 
 const TaskCard = ({ task }) => {
-   
   const { attributes, listeners, setNodeRef, transform } = useDraggable({
     id: task._id,
   });
@@ -25,9 +24,12 @@ const TaskCard = ({ task }) => {
   const handleDelete = async (e) => {
     e.stopPropagation();
     if (confirm("Are you sure you want to delete this task?")) {
-      await fetch(`http://localhost:5000/tasks/${task._id}`, {
-        method: "DELETE",
-      });
+      await fetch(
+        `https://task-manager-server-production-7101.up.railway.app/tasks/${task._id}`,
+        {
+          method: "DELETE",
+        }
+      );
     }
   };
 
@@ -53,7 +55,7 @@ const TaskCard = ({ task }) => {
           <div className="flex gap-2">
             <DialogDemo task={task} />
             <Button className="text-4xl" onClick={handleDelete}>
-              <MdDeleteForever  size={32}  />
+              <MdDeleteForever size={32} />
             </Button>
           </div>
         </CardFooter>

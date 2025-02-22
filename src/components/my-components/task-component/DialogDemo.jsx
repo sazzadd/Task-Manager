@@ -1,27 +1,42 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { Button } from "@/components/ui/button"
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
-import { Input } from "@/components/ui/input"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Textarea } from "@/components/ui/textarea"
-import { FaEdit } from "react-icons/fa"
+import { Button } from "@/components/ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Textarea } from "@/components/ui/textarea";
+import { useState } from "react";
+import { FaEdit } from "react-icons/fa";
 
 const DialogDemo = ({ task }) => {
-  const [title, setTitle] = useState(task.title)
-  const [description, setDescription] = useState(task.description)
-  const [category, setCategory] = useState(task.category)
+  const [title, setTitle] = useState(task.title);
+  const [description, setDescription] = useState(task.description);
+  const [category, setCategory] = useState(task.category);
 
   const handleUpdate = async (e) => {
-    e.preventDefault()
-    const updatedTask = { ...task, title, description, category }
-    await fetch(`http://localhost:5000/tasks/${task._id}`, {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(updatedTask),
-    })
-  }
+    e.preventDefault();
+    const updatedTask = { ...task, title, description, category };
+    await fetch(
+      `https://task-manager-server-production-7101.up.railway.app/tasks/${task._id}`,
+      {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(updatedTask),
+      }
+    );
+  };
 
   return (
     <Dialog>
@@ -37,11 +52,20 @@ const DialogDemo = ({ task }) => {
         <form onSubmit={handleUpdate} className="space-y-4">
           <div>
             <label className="block text-sm font-medium">Title</label>
-            <Input required maxLength={50} value={title} onChange={(e) => setTitle(e.target.value)} />
+            <Input
+              required
+              maxLength={50}
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+            />
           </div>
           <div>
             <label className="block text-sm font-medium">Description</label>
-            <Textarea maxLength={200} value={description} onChange={(e) => setDescription(e.target.value)} />
+            <Textarea
+              maxLength={200}
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+            />
           </div>
           <div>
             <label className="block text-sm font-medium">Category</label>
@@ -62,8 +86,7 @@ const DialogDemo = ({ task }) => {
         </form>
       </DialogContent>
     </Dialog>
-  )
-}
+  );
+};
 
-export default DialogDemo
-
+export default DialogDemo;

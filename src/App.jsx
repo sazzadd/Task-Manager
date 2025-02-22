@@ -1,9 +1,9 @@
+import TaskContainer from "@/components/my-components/task-component/TaskContainer";
 import { ThemeProvider } from "@/components/theme-provider";
 import { useContext } from "react";
 import "./App.css";
 import { AuthContext } from "./AuthProvider/AuthProvider";
 import Navbar from "./components/my-components/Navbar";
-import TaskContainer from "@/components/my-components/task-component/TaskContainer";
 
 function App() {
   const { user, handleLogOut, GoogleLogin } = useContext(AuthContext);
@@ -15,10 +15,14 @@ function App() {
         {user ? (
           <TaskContainer />
         ) : (
-          <div className="flex items-center justify-center h-full">
-            <button onClick={GoogleLogin} className="btn btn-primary">
-              Sign in with Google
-            </button>
+          <div className="flex items-center my-auto text-2xl justify-center h-full">
+            <div
+              onClick={GoogleLogin}
+              className=" text-2xl animated-text text-center px-2 font-bold text-primary"
+            >
+              Please sign in to access the app and store your task securely
+              <br />
+            </div>
           </div>
         )}
       </div>

@@ -1,14 +1,17 @@
-import { useDroppable } from "@dnd-kit/core"
-import { MdOutlinePendingActions } from "react-icons/md"
-import TaskCard from "./TaskCard"
+import { useDroppable } from "@dnd-kit/core";
+import { MdOutlinePendingActions } from "react-icons/md";
+import TaskCard from "./TaskCard";
 
 const ToDoTask = ({ tasks }) => {
   const { setNodeRef } = useDroppable({
     id: "to-do",
-  })
+  });
 
   return (
-    <div ref={setNodeRef} className="lg:flex-1 bg-secondary/40 rounded-md h-full overflow-y-auto">
+    <div
+      ref={setNodeRef}
+      className="lg:flex-1 bg-secondary/40 border border-blue-400 rounded-md h-full overflow-y-auto"
+    >
       <h4 className="font-bold sticky p-4 top-0 flex bg-blue-400 py-5 text-xl">
         <span className="mt-1 mr-1">
           <MdOutlinePendingActions />
@@ -21,8 +24,7 @@ const ToDoTask = ({ tasks }) => {
         ))}
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default ToDoTask
-
+export default ToDoTask;

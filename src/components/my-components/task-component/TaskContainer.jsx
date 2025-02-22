@@ -65,7 +65,7 @@ const TaskContainer = () => {
 
   const fetchTasks = async () => {
     const response = await fetch(
-      `http://localhost:5000/tasks?email=${userEmail}`
+      `https://task-manager-server-production-7101.up.railway.app/tasks?email=${userEmail}`
     );
     const data = await response.json();
     setTasks(data);
@@ -75,11 +75,14 @@ const TaskContainer = () => {
     e.preventDefault();
     const timestamp = new Date().toISOString();
     const newTask = { title, description, category, userEmail, timestamp };
-    const response = await fetch("http://localhost:5000/tasks", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(newTask),
-    });
+    const response = await fetch(
+      "https://task-manager-server-production-7101.up.railway.app/tasks",
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(newTask),
+      }
+    );
     const data = await response.json();
     setTasks([...tasks, data]);
     setOpen(false);
@@ -133,11 +136,14 @@ const TaskContainer = () => {
   };
 
   const updateTaskCategory = async (taskId, newCategory) => {
-    const response = await fetch(`http://localhost:5000/tasks/${taskId}`, {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ category: newCategory }),
-    });
+    const response = await fetch(
+      `https://task-manager-server-production-7101.up.railway.app/tasks/${taskId}`,
+      {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ category: newCategory }),
+      }
+    );
     const updatedTask = await response.json();
     setTasks((tasks) =>
       tasks.map((task) =>
