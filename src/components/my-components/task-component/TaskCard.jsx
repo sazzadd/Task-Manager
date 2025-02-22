@@ -35,7 +35,7 @@ const TaskCard = ({ task }) => {
 
   return (
     <div ref={setNodeRef} style={style}>
-      <Card className="border border-gray-300 shadow-sm p-2 m-2">
+      <Card className="border border-gray-300 shadow-sm p-2 m-3">
         <div {...attributes} {...listeners}>
           <CardHeader className="flex flex-row justify-between items-center">
             <CardTitle className="text-base font-medium flex items-center gap-2">
